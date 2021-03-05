@@ -6,6 +6,14 @@ use tetra::{Context, ContextBuilder, Event, State};
 const SCREEN_WIDTH: i32 = 320;
 const SCREEN_HEIGHT: i32 = 180;
 
+fn main() -> tetra::Result {
+    ContextBuilder::new("Tetra", SCREEN_WIDTH * 4, SCREEN_HEIGHT * 4)
+        .resizable(true)
+        .quit_on_escape(true)
+        .build()?
+        .run(GameState::new)
+}
+
 struct Assets {
     // assets go here...
 }
@@ -64,12 +72,4 @@ impl State for GameState {
 
         Ok(())
     }
-}
-
-fn main() -> tetra::Result {
-    ContextBuilder::new("Tetra", SCREEN_WIDTH * 4, SCREEN_HEIGHT * 4)
-        .resizable(true)
-        .quit_on_escape(true)
-        .build()?
-        .run(GameState::new)
 }
