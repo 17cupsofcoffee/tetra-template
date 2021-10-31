@@ -15,6 +15,12 @@ Feel free to use this as a starting point for your own games!
 
 ## FAQ
 
+### Why is the project split into a library and a binary?
+
+The crash reporting code is fairly large, and I don't like having to scroll past it every time I'm editing the main file of my game. It'll probably get bigger in the future too, as I'd like to try implementing something like [Way of Rhea's crash handler](https://www.anthropicstudios.com/2021/03/05/crash-reporter/) eventually.
+
+Originally, I worked around this by having a `game` submodule, but then that meant that pretty much everything had to be nested in a `game` subfolder too.
+
 ### Why are your assets in a seperate struct?
 
 Assets like textures and sounds are reference-counted internally, so it can be tempting to scatter copies of them across your game. However, I've found it's usually better to try to keep them in one place, so you can easily update/reload them without needing to propagate that change throughout your game's state. I'll then pass this `Assets` struct around where it's needed (e.g. for drawing/playing sounds).

@@ -1,13 +1,26 @@
+mod assets;
+
 use eyre::{Report, Result};
 use tetra::graphics::scaling::{ScalingMode, ScreenScaler};
 use tetra::graphics::{self, BlendAlphaMode, BlendMode, Color};
 use tetra::input::{self, Key};
-use tetra::{Context, Event, State};
+use tetra::{Context, ContextBuilder, Event, State};
 
 use crate::assets::Assets;
-use crate::{SCREEN_HEIGHT, SCREEN_WIDTH};
 
-pub struct GameState {
+pub const GAME_NAME: &str = "Tetra";
+const SCREEN_WIDTH: i32 = 320;
+const SCREEN_HEIGHT: i32 = 180;
+
+pub fn run() -> Result<()> {
+    ContextBuilder::new(GAME_NAME, SCREEN_WIDTH * 4, SCREEN_HEIGHT * 4)
+        .resizable(true)
+        .quit_on_escape(true)
+        .build()?
+        .run(GameState::new)
+}
+
+struct GameState {
     assets: Assets,
     scaler: ScreenScaler,
 }

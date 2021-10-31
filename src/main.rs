@@ -1,18 +1,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-mod assets;
-mod game;
-
 use std::panic;
-
-use eyre::Result;
-use tetra::ContextBuilder;
-
-use crate::game::GameState;
-
-const GAME_NAME: &str = "Tetra";
-const SCREEN_WIDTH: i32 = 320;
-const SCREEN_HEIGHT: i32 = 180;
 
 fn main() {
     panic::set_hook(Box::new(|e| {
@@ -20,19 +8,11 @@ fn main() {
         report_error(&msg);
     }));
 
-    if let Err(e) = run() {
+    if let Err(e) = tetra_template::run() {
         let msg = format!("{:?}", e);
         report_error(&msg);
         std::process::exit(1);
     }
-}
-
-fn run() -> Result<()> {
-    ContextBuilder::new(GAME_NAME, SCREEN_WIDTH * 4, SCREEN_HEIGHT * 4)
-        .resizable(true)
-        .quit_on_escape(true)
-        .build()?
-        .run(GameState::new)
 }
 
 fn report_error(msg: &str) {
@@ -51,7 +31,7 @@ fn report_error(msg: &str) {
         write!(
             crash_log,
             "Oh no! {} has crashed.\n\nHere's the error message, if you want to report the issue:\n\n{}",
-            GAME_NAME, msg
+            tetra_template::GAME_NAME, msg
         )
         .unwrap();
     }
