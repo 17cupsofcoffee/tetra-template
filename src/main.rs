@@ -1,17 +1,22 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use std::panic;
+use std::process;
+use std::thread;
 
 fn main() {
     panic::set_hook(Box::new(|e| {
-        let msg = e.to_string();
-        report_error(&msg);
+        // This should work on desktop, at least.
+        if let Some("main") = thread::current().name() {
+            let msg = e.to_string();
+            report_error(&msg);
+        }
     }));
 
     if let Err(e) = tetra_template::run() {
         let msg = format!("{:?}", e);
         report_error(&msg);
-        std::process::exit(1);
+        process::exit(1);
     }
 }
 
